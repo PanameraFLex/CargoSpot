@@ -38,7 +38,7 @@ export const updateWarehouseById = async(req,res)=>{
 		res.status(500).json({message:"Update failed"})
 	}
 };
-
+// delete existing warehouse
 export const deleteWarehouseById = async(req,res)=>{
 	try{
 		const deleted = await Warehouse.findByIdAndDelete(req.params.id);
@@ -49,12 +49,13 @@ export const deleteWarehouseById = async(req,res)=>{
 	}
 };
 
+// search warehouse 
 export const searchWarehouseById = async(req,res)=>{
 	const { name, manager, minCap, maxCap } = req.query;
 	const query = {};
 	if (name) query.name = {$regex: name, $options: "i"};
 	if (manager) query.manager = {$regex: manager, $options: "i"};
-	if (mincap || maxCap)
+	if (minCap || maxCap)
 		query.capacity = {
 		...(minCap && { $gte: parseInt(minCap)}),
 		...(maxCap && { $lte: parseInt(maxCap)}),
@@ -67,3 +68,32 @@ export const searchWarehouseById = async(req,res)=>{
 		res.status(500).json({ message: "Search error" });
 	}
 }
+
+// controllers/warehouseController.js
+export const searchWarehouseNearMe = async (req, res) => {
+  try {
+    const { lat, lng, maxDistance = 10000 } = req.query;
+
+    if (!lat || !lng) {
+      return res.status(400).json({ message: "Coordinates required" });
+    }
+
+    const warehouses = await Warehouse.find({
+      geo: {
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [parseFloat(lng), parseFloat(lat)], // [lng, lat]
+          },
+          $maxDistance: parseInt(maxDistance), // meters
+        },
+      },
+    });
+
+    res.json(warehouses);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error fetching nearby warehouses" });
+  }
+};
+

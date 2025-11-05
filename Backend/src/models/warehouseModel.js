@@ -26,14 +26,18 @@ const warehouseSchema = new mongoose.Schema(
 			type:String,
 			required:[true,"Specify name of Warehouse"]
 		},
-		location:{
-			type:String,
-			required:[true,"Specify Warehouse location"]
-		},
-		coordinates:{
-			lat:{type:Number,required:true},
-			lng:{type:Number, required:true}
-		},
+		location: { type: String, required: true },
+			geo: {
+				type: {
+					type: String,
+					enum: ["Point"],
+					default: "Point",
+				},
+				coordinates: {
+					type: [Number],
+					required: true,
+				},
+			},
 		capacity:{
 			type:Number,
 			default:0
@@ -50,6 +54,8 @@ const warehouseSchema = new mongoose.Schema(
 	},
 	{timestamps:true}
 );
+// Enable geospatial queries
+warehouseSchema.index({ geo: "2dsphere" });
 const Warehouse = mongoose.model("Warehouse", warehouseSchema)
 
 export default Warehouse;
