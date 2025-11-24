@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { API_BASE_URL } from "../config";
+import { useEffect, useState } from "react";
 import BackButton from "../components/BackButton";
 import WarehouseCard from "../components/WarehouseCard";
 import SearchBar from "../components/SearchBar";
@@ -82,7 +82,7 @@ export default function Warehouses() {
 
       {loading && <p className="text-gray-500">Loading warehouses...</p>}
 
-      {/* ⛔ Avoid rendering grid until data is loaded */}
+      {/* Avoid rendering grid until data is loaded */}
       {!loading && filteredWarehouses.length === 0 && (
         <p className="text-gray-500 mt-4">No warehouses match your search.</p>
       )}

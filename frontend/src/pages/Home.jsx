@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { API_BASE_URL } from "../config";
 import WarehouseMap from "../components/WarehouseMap";
 
 export default function Home() {
@@ -8,7 +9,7 @@ export default function Home() {
   const [loadingNearby, setLoadingNearby] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:6321/api/warehouses")
+    fetch(`${API_BASE_URL}/warehouses`)
       .then((r) => r.json())
       .then((data) => setWarehouses(data))
       .catch((err) => {
@@ -30,7 +31,7 @@ export default function Home() {
 
         try {
           const res = await fetch(
-            `http://localhost:6321/api/warehouses/near?lat=${latitude}&lng=${longitude}&maxDistance=20000`
+            `${API_BASE_URL}/warehouses/near?lat=${latitude}&lng=${longitude}&maxDistance=20000`
           );
           const data = await res.json();
           setNearby(data || []);

@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../config";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import BackButton from "../components/BackButton";
@@ -7,7 +8,7 @@ export default function WarehouseDetails() {
   const [warehouse, setWarehouse] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:6321/api/warehouses/${id}`)
+    fetch(`${API_BASE_URL}/warehouses/${id}`)
       .then((res) => res.json())
       .then((data) => setWarehouse(data));
   }, [id]);
