@@ -1,1 +1,1 @@
-export const API_BASE_URL = "http://localhost:6321/api";
+export const API_BASE_URL = "https://cargospot.onrender.com/api";
